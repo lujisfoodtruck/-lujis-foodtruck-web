@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Admin | Luji's Foodtruck</title>
+
+<link rel="icon" type="image/png" href="../assets/img/favicon-32.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/style.css" />
+<style>
+  body { background: var(--color-cream); }
+  .admin-shell {
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: var(--space-6) var(--container-pad);
+  }
+  .admin-wide {
+    max-width: 56rem;
+  }
+  .admin-card {
+    background: var(--color-white);
+    border: 0.125rem solid var(--color-ink);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-card);
+  }
+  .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    flex-wrap: wrap;
+  }
+  .admin-table {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .admin-event-row {
+    border: 0.125rem solid var(--color-ink);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    display: grid;
+    gap: 0.5rem;
+  }
+  .admin-event-row .row-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .admin-event-row.is-editing .row-view { display: none; }
+  .admin-event-row:not(.is-editing) .row-edit { display: none; }
+  .admin-product-row.is-editing .row-view { display: none; }
+  .admin-product-row:not(.is-editing) .row-edit { display: none; }
+  .admin-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: var(--space-4);
+  }
+  .admin-tab {
+    font-family: var(--font-display);
+    letter-spacing: 0.04em;
+    font-size: 1.1rem;
+    padding: 0.6rem 1.25rem;
+    border: 0.125rem solid var(--color-ink);
+    border-radius: var(--radius-pill);
+    background: var(--color-white);
+  }
+  .admin-tab.is-active {
+    background: var(--color-yellow);
+    box-shadow: var(--shadow-pop-sm);
+  }
+  .admin-panel { display: none; }
+  .admin-panel.is-active { display: block; }
+  .admin-product-row {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+  .admin-product-row .row-view,
+  .admin-product-row .row-edit {
+    flex: 1;
+  }
+  .admin-product-photo {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: var(--radius-md);
+    border: 0.125rem solid var(--color-ink);
+    object-fit: cover;
+    background: var(--color-yellow-soft);
+    flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="admin-shell" id="loginView">
+  <div class="admin-card">
+    <span class="eyebrow">Área privada</span>
+    <h1 class="section-title" style="font-size:2rem; margin-top:0.5rem;">Admin de Luji's</h1>
+    <p class="section-sub">Ingresá la contraseña para editar eventos y el menú del food truck.</p>
+    <form id="loginForm" style="margin-top: var(--space-3);">
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password" />
+      </div>
+      <button class="btn btn--primary btn--full" type="submit" style="margin-top: var(--space-3);">Ingresar</button>
+      <div class="form-status" id="loginStatus"></div>
+    </form>
+  </div>
+</div>
+
+<div class="admin-shell admin-wide" id="dashboardView" style="display:none;">
+  <div class="admin-header">
+    <div>
+      <span class="eyebrow">Admin de Luji's</span>
+      <h1 class="section-title" style="font-size:2rem; margin-top:0.5rem;">Panel de contenido</h1>
+    </div>
+    <button class="btn btn--outline btn--sm" id="logoutBtn" style="color:var(--color-ink); border-color:var(--color-ink); box-shadow: 0.3rem 0.3rem 0 var(--color-ink);">Cerrar sesión</button>
+  </div>
+
+  <div class="admin-tabs">
+    <button type="button" class="admin-tab is-active" data-tab="eventos">Eventos</button>
+    <button type="button" class="admin-tab" data-tab="productos">Productos</button>
+    <button type="button" class="admin-tab" data-tab="pedidos">Pedidos</button>
+  </div>
+
+  <div class="admin-panel is-active" id="panel-eventos">
+    <div class="admin-card" style="margin-bottom: var(--space-4);">
+      <h2 style="font-size:1.35rem; margin-bottom: var(--space-2);">Agregar evento</h2>
+      <form id="createForm">
+        <div class="form-row form-row--2">
+          <div class="field">
+            <label for="new-place">Lugar</label>
+            <input type="text" id="new-place" required maxlength="150" placeholder="Ej: Wynwood Marketplace" />
+          </div>
+          <div class="field">
+            <label for="new-address">Dirección</label>
+            <input type="text" id="new-address" required maxlength="200" placeholder="Ej: 2250 NW 2nd Ave, Miami, FL" />
+          </div>
+        </div>
+        <div class="form-row form-row--2">
+          <div class="field">
+            <label for="new-date">Fecha</label>
+            <input type="date" id="new-date" required />
+          </div>
+          <div class="field">
+            <label for="new-time">Horario</label>
+            <input type="text" id="new-time" required maxlength="60" placeholder="Ej: 12:00 PM - 8:00 PM" />
+          </div>
+        </div>
+        <button class="btn btn--primary" type="submit">Agregar evento</button>
+        <div class="form-status" id="createStatus"></div>
+      </form>
+    </div>
+
+    <div class="admin-table" id="eventsAdminList"></div>
+  </div>
+
+  <div class="admin-panel" id="panel-productos">
+    <div class="admin-card" style="margin-bottom: var(--space-4);">
+      <h2 style="font-size:1.35rem; margin-bottom: var(--space-2);">Agregar producto</h2>
+      <form id="createProductForm">
+        <div class="form-row form-row--2">
+          <div class="field">
+            <label for="new-p-title">Título</label>
+            <input type="text" id="new-p-title" required maxlength="100" placeholder="Ej: Carne Suave" />
+          </div>
+          <div class="field">
+            <label for="new-p-price">Precio (USD)</label>
+            <input type="number" id="new-p-price" required min="0" step="0.25" placeholder="3.50" />
+          </div>
+        </div>
+        <div class="form-row form-row--2">
+          <div class="field">
+            <label for="new-p-category">Categoría</label>
+            <select id="new-p-category">
+              <option value="fresh">Fresco (menú del truck)</option>
+              <option value="frozen">Congelado (para llevar)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="new-p-unit">Se vende por</label>
+            <select id="new-p-unit">
+              <option value="un">Unidad</option>
+              <option value="docena">Docena</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="new-p-desc">Descripción</label>
+            <input type="text" id="new-p-desc" maxlength="300" placeholder="Ej: Beef, onion, egg & a touch of cumin." />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="new-p-photo">Foto (opcional)</label>
+            <input type="file" id="new-p-photo" accept="image/png,image/jpeg,image/webp" />
+          </div>
+        </div>
+        <button class="btn btn--primary" type="submit">Agregar producto</button>
+        <div class="form-status" id="createProductStatus"></div>
+      </form>
+    </div>
+
+    <div class="admin-table" id="productsAdminList"></div>
+  </div>
+
+  <div class="admin-panel" id="panel-pedidos">
+    <div class="admin-card">
+      <h2 style="font-size:1.35rem; margin-bottom: var(--space-2);">Condiciones de pedido</h2>
+      <p class="section-sub" style="margin-bottom: var(--space-3);">Estas reglas se aplican automáticamente en el armado de pedidos de <code>menu.html</code>.</p>
+      <form id="settingsForm">
+        <div class="field">
+          <label>Días de delivery disponibles</label>
+          <div style="display:flex; flex-wrap:wrap; gap: var(--space-3); margin-top: 0.5rem;">
+            <label style="display:flex; align-items:center; gap:0.4rem; font-weight:400; text-transform:none;"><input type="checkbox" class="delivery-day" value="0" /> Domingo</label>
+            <label style="display:flex; align-items:center; gap:0.4rem; font-weight:400; text-transform:none;"><input type="checkbox" class="delivery-day" value="1" /> Lunes</label>
+            <label style="display:flex; align-items:center; gap:0.4rem; font-weight:400; text-transform:none;"><input type="checkbox" class="delivery-day" value="2" /> Martes</label>
+            <label style="display:flex; align-items:center; gap:0.4rem; font-weight:400; text-transform:none;"><input type="checkbox" class="delivery-day" value="3" /> Miércoles</label>
+            <label style="display:flex; align-items:center; gap:0.4rem; font-weight:400; text-transform:none;"><input type="checkbox" class="delivery-day" value="4" /> Jueves</label>
+            <label style="display:flex; align-items:center; gap:0.4rem; font-weight:400; text-transform:none;"><input type="checkbox" class="delivery-day" value="5" /> Viernes</label>
+            <label style="display:flex; align-items:center; gap:0.4rem; font-weight:400; text-transform:none;"><input type="checkbox" class="delivery-day" value="6" /> Sábado</label>
+          </div>
+        </div>
+        <div class="field" style="margin-top: var(--space-3); max-width: 16rem;">
+          <label for="delivery-minimum">Pedido mínimo para delivery (USD)</label>
+          <input type="number" id="delivery-minimum" min="0" step="1" required />
+        </div>
+        <button class="btn btn--primary" type="submit" style="margin-top: var(--space-3);">Guardar condiciones</button>
+        <div class="form-status" id="settingsStatus"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/js/config.js"></script>
+<script src="../assets/js/admin.js"></script>
+</body>
+</html>

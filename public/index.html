@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Luji's Foodtruck | Argentinian Flavor in Miami</title>
+<meta name="description" content="Luji's Foodtruck — handcrafted Argentine empanadas in Miami. Private events, corporate catering, and wholesale for restaurants." />
+
+<link rel="icon" type="image/png" href="assets/img/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="a11y.skipLink">Skip to content</a>
+
+<header class="site-header">
+  <div class="container nav">
+    <a href="#top" class="brand">
+      <img class="brand-logo" src="assets/img/logo-white.webp" alt="Luji's Sabor Argentino" width="171" height="140" />
+    </a>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="menu.html" data-i18n="nav.menu">Menu</a>
+      <a href="#about" data-i18n="nav.about">About</a>
+      <a href="#catering" data-i18n="nav.catering">Catering</a>
+      <a href="#events" data-i18n="nav.events">Events</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
+    </nav>
+
+    <div class="nav-cta">
+      <div class="lang-switch" role="group" aria-label="Language / Idioma">
+        <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+        <button type="button" class="lang-btn" data-lang="es">ES</button>
+      </div>
+      <a class="btn btn--primary btn--sm" href="menu.html" data-i18n="nav.orderNow">Order Now</a>
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileMenu" data-i18n-aria-label="a11y.openMenu" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="menu.html" data-i18n="nav.menu">Menu</a>
+    <a href="#about" data-i18n="nav.about">About</a>
+    <a href="#catering" data-i18n="nav.catering">Catering</a>
+    <a href="#events" data-i18n="nav.events">Events</a>
+    <a href="#contact" data-i18n="nav.contact">Contact</a>
+    <div class="lang-switch" role="group" aria-label="Language / Idioma">
+      <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+      <button type="button" class="lang-btn" data-lang="es">ES</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <svg class="hero-rays" viewBox="0 0 200 200" aria-hidden="true">
+      <g fill="#FEB936">
+        <path d="M100 0 L106 90 L94 90 Z"/>
+        <path d="M100 0 L106 90 L94 90 Z" transform="rotate(30 100 100)"/>
+        <path d="M100 0 L106 90 L94 90 Z" transform="rotate(60 100 100)"/>
+        <path d="M100 0 L106 90 L94 90 Z" transform="rotate(90 100 100)"/>
+        <path d="M100 0 L106 90 L94 90 Z" transform="rotate(120 100 100)"/>
+        <path d="M100 0 L106 90 L94 90 Z" transform="rotate(150 100 100)"/>
+        <path d="M100 0 L106 90 L94 90 Z" transform="rotate(180 100 100)"/>
+        <path d="M100 0 L106 90 L94 90 Z" transform="rotate(210 100 100)"/>
+        <path d="M100 0 L106 90 L94 90 Z" transform="rotate(240 100 100)"/>
+        <path d="M100 0 L106 90 L94 90 Z" transform="rotate(270 100 100)"/>
+        <path d="M100 0 L106 90 L94 90 Z" transform="rotate(300 100 100)"/>
+        <path d="M100 0 L106 90 L94 90 Z" transform="rotate(330 100 100)"/>
+      </g>
+    </svg>
+    <div class="hero-confetti" aria-hidden="true"></div>
+    <div class="hero-stars" aria-hidden="true">
+      <img src="assets/img/star-yellow-filled.png" alt="" class="hero-star hero-star--1" />
+      <img src="assets/img/star-yellow-outline.png" alt="" class="hero-star hero-star--2" />
+      <img src="assets/img/star-red.png" alt="" class="hero-star hero-star--3" />
+      <img src="assets/img/star-yellow-filled.png" alt="" class="hero-star hero-star--4" />
+      <img src="assets/img/star-yellow-outline.png" alt="" class="hero-star hero-star--5" />
+    </div>
+
+    <div class="hero-content">
+      <img class="hero-side-empanada hero-side-empanada--left" src="assets/img/hero-empanada-left.webp" alt="" aria-hidden="true" loading="lazy" width="700" height="700" />
+
+      <div class="container hero-inner">
+        <span class="hero-badge" data-i18n="hero.badge">Miami · Argentinian Food Truck</span>
+        <h1 class="hero-title">SABOR<br/><span class="line-yellow">ARGENTINO</span></h1>
+        <p class="hero-text" data-i18n="hero.text">Argentinian Food Truck. Private events, corporate catering &amp; more.</p>
+        <div class="hero-actions">
+          <a class="btn" href="menu.html" data-i18n="hero.cta1">Order Now</a>
+          <a class="btn btn--outline" href="#catering" data-i18n="hero.cta2">Catering &amp; Events</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong>100%</strong>
+            <span data-i18n="hero.stat1">Handcrafted</span>
+          </div>
+          <div class="hero-stat">
+            <strong>5★</strong>
+            <span data-i18n="hero.stat2">Rated by fans</span>
+          </div>
+          <div class="hero-stat">
+            <strong data-i18n="hero.stat3value">Daily</strong>
+            <span data-i18n="hero.stat3">Fresh from the truck</span>
+          </div>
+        </div>
+      </div>
+
+      <img class="hero-side-empanada hero-side-empanada--right" src="assets/img/hero-empanada-right.webp" alt="" aria-hidden="true" loading="lazy" width="700" height="700" />
+    </div>
+
+    <div class="hero-truck-row">
+      <div class="hero-truck-scene">
+        <div class="hero-truck-shadow"></div>
+        <img class="hero-truck" src="assets/img/hero-truck-new.webp" alt="Luji's food truck, side view" width="1024" height="1024" />
+        <div class="hero-truck-steam" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+        <span class="hero-truck-badge" data-i18n="hero.truckBadge">We're here!</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 1: MENU TEASER ============ -->
+  <section class="section" id="empanadas">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow" data-i18n="s1.eyebrow">Our Menu</span>
+        <h2 class="section-title" data-i18n="s1.title">Explore the delicious popular empanadas</h2>
+        <p class="section-sub" style="margin-inline:auto;" data-i18n="s1.sub">Pick your favorites and build your order in seconds. This is a preview — the full menu with every flavor is one click away.</p>
+      </div>
+
+      <div class="menu-scroller" id="menuTeaser">
+        <p class="events-empty" data-i18n="s1.loading">Loading menu…</p>
+      </div>
+
+      <div class="menu-teaser-cta">
+        <a class="btn btn--primary" href="menu.html" data-i18n="s1.cta">See full menu &amp; order</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2: WHY CHOOSE US ============ -->
+  <section class="section section--cream" id="about">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow" data-i18n="s2.eyebrow">Why choose us</span>
+        <h2 class="section-title section-title--h2" data-i18n="s2.title">We Offer quality service That Customers Needs</h2>
+      </div>
+
+      <div class="grid grid--3">
+        <article class="card feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c-4 3-7 6-7 10a7 7 0 0 0 14 0c0-4-3-7-7-10Z"/><path d="M12 8v8"/></svg>
+          </div>
+          <h3 data-i18n="s2.f1title">Our Heritage</h3>
+          <p data-i18n="s2.f1desc">Handcrafted empanadas honoring Argentina's culinary tradition.</p>
+        </article>
+
+        <article class="card feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21c1-6 3-9 8-9s7 3 8 9"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h3 data-i18n="s2.f2title">Quality Ingredients</h3>
+          <p data-i18n="s2.f2desc">Only grass-fed beef and farm-fresh produce in every bite.</p>
+        </article>
+
+        <article class="card feature-card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          </div>
+          <h3 data-i18n="s2.f3title">Daily Fresh</h3>
+          <p data-i18n="s2.f3desc">Every empanada is made from scratch on our truck with care.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 3: CATERING / B2B ============ -->
+  <section class="section section--ink" id="catering">
+    <div class="container">
+      <div class="section-head">
+        <span class="fifa-badge">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 3h10v3a5 5 0 0 1-4 4.9V13a3 3 0 0 0 3 3h1v2H7v-2h1a3 3 0 0 0 3-3v-2.1A5 5 0 0 1 7 6V3Zm-4 2h3v2a5 5 0 0 1-3 4.58V5Zm18 0v6.58A5 5 0 0 1 18 7V5h3ZM9 19h6v2H9v-2Z"/></svg>
+          <span data-i18n="s3.fifaBadge">Official FIFA World Cup 26™ Miami Vendor · Catering &amp; Wholesale</span>
+        </span>
+        <h2 class="section-title section-title--h2" data-i18n="s3.title">For Events, Restaurants &amp; Venues</h2>
+        <p class="section-sub" style="color:rgba(255,255,255,0.8)" data-i18n="s3.sub">WE CATER EVENTS &amp; SUPPLY RESTAURANTS</p>
+      </div>
+
+      <div class="catering-grid">
+        <article class="catering-card">
+          <h3 data-i18n="s3.c1title">Private Events</h3>
+          <p data-i18n="s3.c1desc">Weddings, corporate lunches, dinners, festivals, breweries, birthday parties, and more. We'd love to be part of your next event.</p>
+          <a class="btn btn--orange btn--sm" href="#contact" data-i18n="s3.c1cta">Book your event</a>
+        </article>
+
+        <article class="catering-card">
+          <h3 data-i18n="s3.c2title">Restaurants &amp; Venues (B2B)</h3>
+          <p data-i18n="s3.c2desc">We supply restaurants, hotels, and food businesses with frozen raw empanadas in bulk. Consistent quality, authentic Argentine recipes, flexible quantities. Contact us to discuss wholesale pricing.</p>
+          <a class="btn btn--outline btn--sm" href="#contact" data-i18n="s3.c2cta">Get wholesale pricing</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GALLERY ============ -->
+  <section class="section section--cream" id="gallery">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow" data-i18n="gallery.eyebrow">Follow the Truck</span>
+        <h2 class="section-title section-title--h2" data-i18n="gallery.title">Straight From The Window</h2>
+        <p class="section-sub" style="margin-inline:auto;" data-i18n="gallery.sub">Real empanadas, real truck, real Miami sunsets.</p>
+      </div>
+
+      <div class="polaroid-grid">
+        <figure class="polaroid polaroid--tilt-left">
+          <img src="assets/img/truck-empanada.webp" alt="Fresh empanada held up in front of Luji's truck" loading="lazy" width="900" height="1200" />
+          <figcaption data-i18n="gallery.caption1">Straight off the grill</figcaption>
+        </figure>
+        <figure class="polaroid polaroid--tilt-right">
+          <img src="assets/img/handcrafting.webp" alt="Hand-folding empanadas in the kitchen" loading="lazy" width="900" height="1200" />
+          <figcaption data-i18n="gallery.caption2">Handmade, every fold</figcaption>
+        </figure>
+        <figure class="polaroid polaroid--tilt-left">
+          <img src="assets/img/truck-sunset.webp" alt="Luji's truck lit up at sunset with customers in line" loading="lazy" width="900" height="1200" />
+          <figcaption data-i18n="gallery.caption3">Golden hour, Luji's hour</figcaption>
+        </figure>
+        <figure class="polaroid polaroid--tilt-right">
+          <img src="assets/img/empanadas-event.webp" alt="Fresh empanadas ready to serve at a catering event" loading="lazy" width="900" height="1200" />
+          <figcaption data-i18n="gallery.caption4">Hot off the fryer</figcaption>
+        </figure>
+      </div>
+
+      <div class="menu-teaser-cta">
+        <a class="btn btn--outline-dark" href="https://instagram.com" target="_blank" rel="noopener" data-i18n="gallery.cta">Follow @lujisfoodtruck</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 4: TESTIMONIALS ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow" data-i18n="s4.eyebrow">Testimonials</span>
+        <h2 class="section-title section-title--h2" data-i18n="s4.title">What have lot's off happy customer explore feedback</h2>
+      </div>
+
+      <div class="grid grid--3">
+        <article class="card testimonial-card">
+          <div class="stars" aria-label="5 out of 5 stars">
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+          </div>
+          <p>"The best empanadas I've had outside of Argentina! The dough is perfectly flaky, and every filling is packed with flavor. I'll definitely be back."</p>
+          <span class="testimonial-author">Emily R.</span>
+        </article>
+
+        <article class="card testimonial-card">
+          <div class="stars" aria-label="5 out of 5 stars">
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+          </div>
+          <p>"Fresh, authentic, and made with care. You can taste the quality in every bite. The beef empanadas were incredible, and the staff was super friendly."</p>
+          <span class="testimonial-author">Michael T.</span>
+        </article>
+
+        <article class="card testimonial-card">
+          <div class="stars" aria-label="5 out of 5 stars">
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.5l2.6 5.5 6 .7-4.4 4.1 1.2 6-5.4-3-5.4 3 1.2-6L1.4 7.7l6-.7Z"/></svg>
+          </div>
+          <p>"Lujis Foodtruck has become my favorite lunch spot. Everything is homemade, always fresh, and the chimichurri takes the empanadas to another level!"</p>
+          <span class="testimonial-author">Sarah L.</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 5: EVENTS ============ -->
+  <section class="section section--cream" id="events">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <span class="eyebrow" data-i18n="s5.eyebrow">Find the truck</span>
+        <h2 class="section-title section-title--h2" data-i18n="s5.title">Upcoming Events</h2>
+        <p class="section-sub" style="margin-inline:auto;" data-i18n="s5.sub">Follow the food truck to its next stop — place, address, date, and time.</p>
+      </div>
+
+      <div id="eventsList" class="grid" style="gap: var(--space-4);">
+        <p class="events-empty" data-i18n="s5.loading">Loading upcoming events…</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 6: CONTACT ============ -->
+  <section class="section" id="contact">
+    <div class="container contact-layout">
+      <div>
+        <span class="eyebrow" data-i18n="s6.eyebrow">Contact Us</span>
+        <h2 class="section-title section-title--h2" data-i18n="s6.title">Have any lunch or dinner plan?</h2>
+        <p class="section-sub" data-i18n="s6.sub">We Offer quality food for lunch &amp; dinner</p>
+
+        <div style="margin-top: var(--space-5);">
+          <div class="contact-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2Z"/></svg>
+            <div>
+              <strong><a href="https://wa.me/17866959263" target="_blank" rel="noopener">+1 786 695 9263</a></strong><br/>
+              <span style="color:var(--color-muted)" data-i18n="s6.hours">Mon to Sun · 11am – 9pm</span>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4Z"/><path d="m4 6 8 7 8-7"/></svg>
+            <div>
+              <strong>hola@lujisfoodtruck.com</strong><br/>
+              <span style="color:var(--color-muted)" data-i18n="s6.emailNote">Catering &amp; wholesale inquiries</span>
+            </div>
+          </div>
+          <div class="contact-info-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div>
+              <strong>Miami, FL</strong><br/>
+              <span style="color:var(--color-muted)" data-i18n="s6.locationNote">See upcoming stops above ↑</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <form class="form-card" id="contactForm" novalidate>
+        <div class="form-row form-row--2">
+          <div class="field" data-field="name">
+            <label for="cf-name"><span data-i18n="s6.name">Name</span> <span class="required">*</span></label>
+            <input type="text" id="cf-name" name="name" autocomplete="name" required maxlength="100" />
+            <span class="field-error" data-i18n="s6.nameError">Please enter your name.</span>
+          </div>
+          <div class="field" data-field="email">
+            <label for="cf-email"><span data-i18n="s6.email">Email</span> <span class="required">*</span></label>
+            <input type="email" id="cf-email" name="email" autocomplete="email" required maxlength="150" />
+            <span class="field-error" data-i18n="s6.emailError">Please enter a valid email.</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field" data-field="phone">
+            <label for="cf-phone" data-i18n="s6.phone">Phone</label>
+            <input type="tel" id="cf-phone" name="phone" autocomplete="tel" maxlength="40" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field" data-field="message">
+            <label for="cf-message"><span data-i18n="s6.message">Message</span> <span class="required">*</span></label>
+            <textarea id="cf-message" name="message" required maxlength="1000" data-i18n-placeholder="s6.messagePlaceholder" placeholder="Tell us about your event, date and guest count..."></textarea>
+            <span class="field-error" data-i18n="s6.messageError">Please write your message.</span>
+          </div>
+        </div>
+        <button type="submit" class="btn btn--primary btn--full" data-i18n="s6.submit">Send Message</button>
+        <div class="form-status" id="formStatus" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a href="#top" class="footer-brand">
+        <img class="brand-logo" src="assets/img/logo-white.webp" alt="Luji's Sabor Argentino" width="171" height="140" />
+      </a>
+      <p data-i18n="footer.tagline">Handcrafted Argentine empanadas, made fresh every day on our food truck in Miami.</p>
+      <div class="footer-social">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 9h3V6h-3a3 3 0 0 0-3 3v2H9v3h2v6h3v-6h3l1-3h-4V9a1 1 0 0 1 1-1Z"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 3v10.5a3.5 3.5 0 1 1-3-3.46"/><path d="M14 3a5 5 0 0 0 5 5"/></svg></a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4 data-i18n="footer.linksTitle">Quick Links</h4>
+      <ul>
+        <li><a href="menu.html" data-i18n="nav.menu">Menu</a></li>
+        <li><a href="#about" data-i18n="nav.about">About</a></li>
+        <li><a href="#catering" data-i18n="nav.catering">Catering</a></li>
+        <li><a href="#events" data-i18n="nav.events">Events</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4 data-i18n="footer.servicesTitle">Services</h4>
+      <ul>
+        <li><a href="#catering" data-i18n="footer.service1">Private Events</a></li>
+        <li><a href="#catering" data-i18n="footer.service2">Corporate Catering</a></li>
+        <li><a href="#catering" data-i18n="footer.service3">Wholesale</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4 data-i18n="footer.contactTitle">Contact</h4>
+      <ul>
+        <li><a href="https://wa.me/17866959263" target="_blank" rel="noopener">+1 786 695 9263</a></li>
+        <li><a href="mailto:hola@lujisfoodtruck.com">hola@lujisfoodtruck.com</a></li>
+        <li><a href="#events">Miami, FL</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    &copy; <span id="year"></span> Luji's Foodtruck. <span data-i18n="footer.rights">All rights reserved.</span>
+  </div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="assets/js/smooth-scroll.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

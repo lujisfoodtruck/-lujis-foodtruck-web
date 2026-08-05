@@ -1,0 +1,7 @@
+node_modules/
+.env
+data/contacts.json
+
+# Raw/unoptimized source images (large, not needed in the deployed site —
+# the optimized .webp versions actually used live under public/assets/img/)
+design-source/

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Menu & Order | Luji's Foodtruck</title>
+<meta name="description" content="Full empanada menu from Luji's Foodtruck. Build your order and send it straight to WhatsApp." />
+
+<link rel="icon" type="image/png" href="assets/img/favicon-32.png" />
+<link rel="apple-touch-icon" href="assets/img/favicon-180.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="assets/css/style.css" />
+<style>
+  .qty-control {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 0.125rem solid var(--color-ink);
+    border-radius: var(--radius-pill);
+    padding: 0.25rem 0.5rem;
+  }
+  .qty-btn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 0.125rem solid var(--color-ink);
+    background: var(--color-yellow);
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .qty-value {
+    min-width: 1.5rem;
+    text-align: center;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .menu-page-grid {
+    display: grid;
+    gap: var(--space-5);
+  }
+  @media (min-width: 64rem) {
+    .menu-page-grid {
+      grid-template-columns: 1.6fr 1fr;
+      align-items: start;
+    }
+  }
+  .menu-list {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .menu-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--color-white);
+    border: 0.125rem solid var(--color-ink);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .menu-row-photo {
+    width: 4rem;
+    height: 4rem;
+    border-radius: var(--radius-md);
+    border: 0.125rem solid var(--color-ink);
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--color-yellow-soft);
+  }
+  .menu-row-photo--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem;
+  }
+  .menu-row-photo--placeholder svg {
+    width: 100%;
+    height: 100%;
+  }
+  .menu-row-info {
+    flex: 1;
+    min-width: 8rem;
+  }
+  .menu-row-info h3 {
+    font-size: 1.25rem;
+  }
+  .menu-row-info p {
+    color: var(--color-muted);
+    font-size: var(--fs-small);
+    max-width: 24rem;
+  }
+  .menu-row-price {
+    font-family: var(--font-display);
+    color: var(--color-red);
+    font-size: 1.25rem;
+    min-width: 4rem;
+  }
+  .cart-card {
+    position: sticky;
+    top: 6.5rem;
+    background: var(--color-cream);
+    border: 0.125rem solid var(--color-ink);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+  }
+  .cart-items {
+    display: grid;
+    gap: 0.5rem;
+    margin: var(--space-3) 0;
+    min-height: 2rem;
+  }
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--fs-small);
+  }
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    border-top: 0.125rem dashed var(--color-ink);
+    padding-top: var(--space-2);
+    margin-top: var(--space-2);
+  }
+  .cart-empty {
+    color: var(--color-muted);
+    font-size: var(--fs-small);
+  }
+  .menu-category-title {
+    font-size: 1.5rem;
+    margin: var(--space-4) 0 var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .menu-category-title:first-child {
+    margin-top: 0;
+  }
+  .menu-category-tag {
+    font-family: var(--font-body);
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: var(--fs-small);
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+  .order-type-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-bottom: var(--space-3);
+  }
+  .order-type-btn {
+    font-family: var(--font-display);
+    letter-spacing: 0.04em;
+    font-size: 1.05rem;
+    padding: 0.65rem;
+    border: 0.125rem solid var(--color-ink);
+    border-radius: var(--radius-pill);
+    background: var(--color-white);
+    text-align: center;
+  }
+  .order-type-btn.is-active {
+    background: var(--color-red);
+    color: var(--color-white);
+  }
+  .delivery-fields {
+    display: none;
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 0.125rem dashed var(--color-ink);
+  }
+  .delivery-fields.is-visible {
+    display: block;
+  }
+  .delivery-note {
+    font-size: var(--fs-small);
+    color: var(--color-muted);
+    margin-bottom: var(--space-2);
+  }
+  .minimum-warning {
+    display: none;
+    background: #fdeceb;
+    border: 0.125rem solid var(--color-red);
+    color: var(--color-red);
+    font-weight: 700;
+    font-size: var(--fs-small);
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius-sm);
+    margin-top: var(--space-2);
+  }
+  .minimum-warning.is-visible {
+    display: block;
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main" data-i18n="a11y.skipLink">Skip to content</a>
+
+<header class="site-header">
+  <div class="container nav">
+    <a href="index.html" class="brand">
+      <img class="brand-logo" src="assets/img/logo-white.webp" alt="Luji's Sabor Argentino" width="171" height="140" />
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="index.html#about" data-i18n="nav.about">About</a>
+      <a href="index.html#catering" data-i18n="nav.catering">Catering</a>
+      <a href="index.html#events" data-i18n="nav.events">Events</a>
+      <a href="index.html#contact" data-i18n="nav.contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <div class="lang-switch" role="group" aria-label="Language / Idioma">
+        <button type="button" class="lang-btn is-active" data-lang="en">EN</button>
+        <button type="button" class="lang-btn" data-lang="es">ES</button>
+      </div>
+      <a class="btn btn--primary btn--sm" href="#cart" data-i18n="menu.viewOrder">View Order</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section section--tight">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow" data-i18n="menu.eyebrow">Full Menu</span>
+        <h1 class="section-title" data-i18n="menu.title">Build Your Order</h1>
+        <p class="section-sub" data-i18n="menu.sub">Pick your quantities and send your order straight to WhatsApp. No hassle, Argentine flavor in minutes.</p>
+      </div>
+
+      <div class="menu-page-grid">
+        <div class="menu-list" id="menuList"></div>
+
+        <aside class="cart-card" id="cart">
+          <h2 style="font-size:1.5rem;" data-i18n="menu.cartTitle">Your Order</h2>
+
+          <div class="order-type-toggle">
+            <button type="button" class="order-type-btn is-active" data-order-type="pickup" data-i18n="menu.pickup">Pickup at the Truck</button>
+            <button type="button" class="order-type-btn" data-order-type="delivery" data-i18n="menu.delivery">Delivery</button>
+          </div>
+
+          <div class="cart-items" id="cartItems">
+            <p class="cart-empty" data-i18n="menu.cartEmpty">You haven't added any empanadas yet.</p>
+          </div>
+          <div class="cart-total">
+            <span>Total</span>
+            <span id="cartTotal">$0.00</span>
+          </div>
+          <div class="minimum-warning" id="minimumWarning"></div>
+
+          <div class="form-row form-row--2" style="margin-top: var(--space-3);">
+            <div class="field">
+              <label for="orderFirstName"><span data-i18n="menu.firstName">First Name</span> <span class="required">*</span></label>
+              <input type="text" id="orderFirstName" maxlength="60" required />
+            </div>
+            <div class="field">
+              <label for="orderLastName"><span data-i18n="menu.lastName">Last Name</span> <span class="required">*</span></label>
+              <input type="text" id="orderLastName" maxlength="60" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="orderPhone"><span data-i18n="menu.phone">Phone</span> <span class="required">*</span></label>
+            <input type="tel" id="orderPhone" maxlength="40" required />
+          </div>
+
+          <div class="delivery-fields" id="deliveryFields">
+            <p class="delivery-note" id="deliveryNote"></p>
+            <div class="field">
+              <label for="orderZip"><span data-i18n="menu.zip">Zip Code</span> <span class="required">*</span></label>
+              <input type="text" id="orderZip" maxlength="10" inputmode="numeric" />
+            </div>
+            <div class="field">
+              <label for="orderDeliveryDate"><span data-i18n="menu.deliveryDate">Delivery Date</span> <span class="required">*</span></label>
+              <select id="orderDeliveryDate"></select>
+            </div>
+          </div>
+
+          <div class="field" style="margin-top: var(--space-3);">
+            <label for="orderNote" data-i18n="menu.notes">Notes (time, special requests)</label>
+            <textarea id="orderNote" rows="3" maxlength="300" data-i18n-placeholder="menu.notesPlaceholder" placeholder="E.g. Pickup today at 7pm"></textarea>
+          </div>
+          <button class="btn btn--primary btn--full" id="sendOrderBtn" style="margin-top: var(--space-3);" disabled data-i18n="menu.sendOrder">
+            Send Order via WhatsApp
+          </button>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-bottom">
+    &copy; <span id="year"></span> Luji's Foodtruck. <span data-i18n="footer.rights">All rights reserved.</span>
+  </div>
+</footer>
+
+<script src="assets/js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+<script src="assets/js/smooth-scroll.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/menu.js"></script>
+</body>
+</html>

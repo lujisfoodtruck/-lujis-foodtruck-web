@@ -1,0 +1,17 @@
+{
+  "name": "lujis-foodtruck",
+  "version": "1.0.0",
+  "description": "Landing page de Luji's Foodtruck (empanadas argentinas) con panel admin de eventos.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "multer": "^2.2.0"
+  }
+}
