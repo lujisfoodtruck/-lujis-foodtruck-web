@@ -101,6 +101,11 @@ function cleanString(value, maxLen) {
   return typeof value === 'string' ? value.trim().slice(0, maxLen) : '';
 }
 
+// ---------- Health check (for uptime pingers, keeps Render's free tier awake) ----------
+app.get('/health', (req, res) => {
+  res.status(200).send('ok');
+});
+
 // ---------- Public: events ----------
 app.get('/api/events', (req, res) => {
   const events = readJson(EVENTS_FILE, []);
