@@ -519,7 +519,7 @@ select {
   color: var(--color-white);
   overflow: hidden;
   padding-top: 8rem;
-  padding-bottom: var(--space-7);
+  padding-bottom: var(--space-4);
 }
 
 .hero-rays {
@@ -700,15 +700,53 @@ select {
 }
 
 .hero-side-empanada--left {
-  left: -4%;
+  left: 4%;
 }
 
 .hero-side-empanada--right {
-  right: -4%;
+  right: 5%;
 }
 
 @media (max-width: 61.9375rem) {
   .hero-side-empanada {
+    display: none;
+  }
+}
+
+.hero-rain {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-rain-item {
+  position: absolute;
+  width: clamp(3rem, 5vw, 4.5rem);
+  height: auto;
+  filter: drop-shadow(0.25rem 0.35rem 0.4rem rgba(0, 0, 0, 0.3));
+}
+
+.hero-rain-item--1 {
+  top: 6%;
+  left: 25%;
+  transform: rotate(-18deg);
+}
+
+.hero-rain-item--2 {
+  top: 88%;
+  left: 23%;
+  transform: rotate(14deg);
+}
+
+.hero-rain-item--3 {
+  top: 18%;
+  left: 70%;
+  transform: rotate(-10deg);
+}
+
+@media (max-width: 61.9375rem) {
+  .hero-rain-item {
     display: none;
   }
 }
@@ -720,7 +758,7 @@ select {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: var(--space-6);
+  margin-top: 0rem;
 }
 
 /* ---------- Hero truck scene ---------- */
@@ -728,6 +766,7 @@ select {
   position: relative;
   width: 100%;
   max-width: 40rem;
+  height: autos;
 }
 
 .hero-truck {
@@ -755,8 +794,8 @@ select {
 
 .hero-truck-badge {
   position: absolute;
-  top: -0.5rem;
-  right: 4%;
+  top: 20%;
+  right: 7%;
   z-index: 3;
   background: var(--color-yellow);
   color: var(--color-ink);
@@ -774,7 +813,7 @@ select {
 .hero-truck-steam {
   position: absolute;
   left: 16%;
-  top: 22%;
+  top: 33%;
   z-index: 3;
   pointer-events: none;
 }
@@ -1128,6 +1167,56 @@ select {
 .polaroid:hover {
   transform: rotate(0deg) scale(1.04);
   z-index: 2;
+}
+
+/* ---------- FIFA proof gallery ---------- */
+.fifa-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+@media (min-width: 56rem) {
+  .fifa-gallery {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.fifa-photo {
+  position: relative;
+  margin: 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 0.15rem solid var(--color-yellow);
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.35);
+  transition: transform var(--transition-base);
+}
+
+.fifa-photo:hover {
+  transform: translateY(-0.35rem);
+}
+
+.fifa-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+
+.fifa-photo figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: var(--space-3) 0.75rem 0.6rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent);
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
 }
 
 /* ---------- Catering / B2B (Section 3) ---------- */

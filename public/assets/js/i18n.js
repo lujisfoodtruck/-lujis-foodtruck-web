@@ -53,6 +53,10 @@
       "s3.c2title": "Restaurants & Venues (B2B)",
       "s3.c2desc": "We supply restaurants, hotels, and food businesses with frozen raw empanadas in bulk. Consistent quality, authentic Argentine recipes, flexible quantities. Contact us to discuss wholesale pricing.",
       "s3.c2cta": "Get wholesale pricing",
+      "s3.photo1": "Our stand at Fan Festival Miami",
+      "s3.photo2": "Official menu, official vendor",
+      "s3.photo3": "Fresh batches, all night long",
+      "s3.photo4": "The line never stopped",
 
       "gallery.eyebrow": "Follow the Truck",
       "gallery.title": "Straight From The Window",
@@ -201,6 +205,10 @@
       "s3.c2title": "Restaurantes y Locales (B2B)",
       "s3.c2desc": "Abastecemos restaurantes, hoteles y comercios gastronómicos con empanadas crudas congeladas al por mayor. Calidad consistente, recetas argentinas auténticas, cantidades flexibles. Contactanos para hablar de precios mayoristas.",
       "s3.c2cta": "Consultá precios mayoristas",
+      "s3.photo1": "Nuestro stand en el Fan Festival Miami",
+      "s3.photo2": "Menú oficial, vendedor oficial",
+      "s3.photo3": "Tandas frescas, toda la noche",
+      "s3.photo4": "La fila no paró nunca",
 
       "gallery.eyebrow": "Seguí al Truck",
       "gallery.title": "Directo Desde la Ventanilla",

@@ -87,6 +87,22 @@
       ease: "none",
       scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.6 }
     });
+
+    var rainItems = document.querySelectorAll(".hero-rain-item");
+    var rainConfig = [
+      { y: -70, rotate: -32 },
+      { y: 80, rotate: 30 },
+      { y: -55, rotate: -24 }
+    ];
+    rainItems.forEach(function (item, i) {
+      var cfg = rainConfig[i] || { y: 60, rotate: 20 };
+      gsap.to(item, {
+        y: cfg.y,
+        rotate: cfg.rotate,
+        ease: "none",
+        scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: 0.6 }
+      });
+    });
   }
 
   window.addEventListener("load", function () {
