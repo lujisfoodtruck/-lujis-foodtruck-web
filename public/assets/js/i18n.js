@@ -55,8 +55,8 @@
       "s3.c2cta": "Get wholesale pricing",
       "s3.photo1": "Our stand at Fan Festival Miami",
       "s3.photo2": "Official menu, official vendor",
-      "s3.photo3": "Fresh batches, all night long",
-      "s3.photo4": "The line never stopped",
+      "s3.photo3": "Right in the heart of Fan Festival Miami",
+      "s3.photo4": "Thousands of fans, one big festival",
 
       "gallery.eyebrow": "Follow the Truck",
       "gallery.title": "Straight From The Window",
@@ -210,8 +210,8 @@
       "s3.c2cta": "Consultá precios mayoristas",
       "s3.photo1": "Nuestro stand en el Fan Festival Miami",
       "s3.photo2": "Menú oficial, vendedor oficial",
-      "s3.photo3": "Tandas frescas, toda la noche",
-      "s3.photo4": "La fila no paró nunca",
+      "s3.photo3": "En el corazón del Fan Festival Miami",
+      "s3.photo4": "Miles de fanáticos, un solo gran festival",
 
       "gallery.eyebrow": "Seguí al Truck",
       "gallery.title": "Directo Desde la Ventanilla",

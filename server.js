@@ -30,6 +30,7 @@ const CONTACTS_FILE = path.join(__dirname, 'data', 'contacts.json');
 const PRODUCTS_FILE = path.join(__dirname, 'data', 'products.json');
 const SETTINGS_FILE = path.join(__dirname, 'data', 'settings.json');
 const PRODUCTS_UPLOAD_DIR = path.join(__dirname, 'public', 'assets', 'img', 'products');
+fs.mkdirSync(PRODUCTS_UPLOAD_DIR, { recursive: true });
 
 const DEFAULT_SETTINGS = { deliveryDays: [2, 4], deliveryMinimum: 60, halfDozenPrice: 32, dozenPrice: 52 };
 
