@@ -336,6 +336,9 @@
     var fileInput = document.getElementById("new-p-photo");
     if (fileInput.files[0]) formData.append("photo", fileInput.files[0]);
 
+    var createSubmitBtn = createProductForm.querySelector('button[type="submit"]');
+    createSubmitBtn.disabled = true;
+
     apiFetch("/api/admin/products", { method: "POST", body: formData })
       .then(function (r) {
         return r.json().then(function (data) {
@@ -350,6 +353,13 @@
           createProductStatus.className = "form-status is-error";
           createProductStatus.textContent = result.data.error || "No se pudo crear el producto.";
         }
+      })
+      .catch(function () {
+        createProductStatus.className = "form-status is-error";
+        createProductStatus.textContent = "No pudimos conectar con el servidor. Intentá de nuevo.";
+      })
+      .finally(function () {
+        createSubmitBtn.disabled = false;
       });
   });
 
@@ -377,7 +387,22 @@
       var fileInput = row.querySelector(".edit-photo");
       if (fileInput.files[0]) formData.append("photo", fileInput.files[0]);
 
-      apiFetch("/api/admin/products/" + id, { method: "PUT", body: formData }).then(loadProducts);
+      apiFetch("/api/admin/products/" + id, { method: "PUT", body: formData })
+        .then(function (r) {
+          return r.json().then(function (data) {
+            return { ok: r.ok, data: data };
+          });
+        })
+        .then(function (result) {
+          if (result.ok) {
+            loadProducts();
+          } else {
+            alert(result.data.error || "No se pudo guardar el producto.");
+          }
+        })
+        .catch(function () {
+          alert("No pudimos conectar con el servidor. Intentá de nuevo.");
+        });
     }
   });
 

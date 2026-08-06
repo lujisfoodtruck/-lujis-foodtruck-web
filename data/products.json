@@ -1,16 +1,128 @@
 [
-  { "id": "carne-suave", "title": "Carne Suave", "description": "Traditional Argentine beef, onion & spices.", "price": 3.5, "photo": "/assets/img/menu/carne-suave.webp", "category": "fresh", "unit": "un" },
-  { "id": "carne-picante", "title": "Carne Picante", "description": "Spicy beef with a kick of chili.", "price": 3.75, "photo": "/assets/img/menu/carne-picante.webp", "category": "fresh", "unit": "un" },
-  { "id": "pollo", "title": "Pollo", "description": "Shredded chicken with bell peppers & mild spices.", "price": 3.5, "photo": "/assets/img/menu/pollo.webp", "category": "fresh", "unit": "un" },
-  { "id": "jamon-queso", "title": "Jamón y Queso", "description": "Ham & melty mozzarella, oven-baked.", "price": 3.25, "photo": "/assets/img/menu/jamon-queso.webp", "category": "fresh", "unit": "un" },
-  { "id": "queso", "title": "Queso", "description": "Melty three-cheese blend (vegetarian).", "price": 3.25, "photo": "/assets/img/menu/queso.webp", "category": "fresh", "unit": "un" },
-  { "id": "cebolla-queso", "title": "Cebolla y Queso", "description": "Caramelized onion & cheese (vegetarian).", "price": 3.25, "photo": "/assets/img/menu/cebolla-queso.webp", "category": "fresh", "unit": "un" },
-  { "id": "camarones", "title": "Camarones", "description": "Shrimp with garlic & fresh herbs.", "price": 4.25, "photo": "/assets/img/menu/camarones.webp", "category": "fresh", "unit": "un" },
-  { "id": "espinaca", "title": "Espinaca", "description": "Spinach & ricotta, a classic vegetarian pick.", "price": 3.25, "photo": "/assets/img/menu/espinaca.webp", "category": "fresh", "unit": "un" },
-  { "id": "carne-suave-frozen", "title": "Carne Suave", "description": "Raw, ready to fry or bake at home. Sold frozen by the dozen.", "price": 21, "photo": "/assets/img/menu/frozen/carne-suave-frozen.webp", "category": "frozen", "unit": "docena" },
-  { "id": "carne-picante-frozen", "title": "Carne Picante", "description": "Raw, ready to fry or bake at home. Sold frozen by the dozen.", "price": 22, "photo": "/assets/img/menu/frozen/carne-picante-frozen.webp", "category": "frozen", "unit": "docena" },
-  { "id": "pollo-frozen", "title": "Pollo", "description": "Raw, ready to fry or bake at home. Sold frozen by the dozen.", "price": 21, "photo": "/assets/img/menu/frozen/pollo-frozen.webp", "category": "frozen", "unit": "docena" },
-  { "id": "jamon-queso-frozen", "title": "Jamón y Queso", "description": "Raw, ready to fry or bake at home. Sold frozen by the dozen.", "price": 20, "photo": "/assets/img/menu/frozen/jamon-queso-frozen.webp", "category": "frozen", "unit": "docena" },
-  { "id": "cerdo-frozen", "title": "Cerdo", "description": "Slow-cooked pork, raw & frozen. Sold by the dozen.", "price": 22, "photo": "/assets/img/menu/frozen/cerdo-frozen.webp", "category": "frozen", "unit": "docena" },
-  { "id": "camarones-frozen", "title": "Camarones", "description": "Raw, ready to fry or bake at home. Sold frozen by the dozen.", "price": 26, "photo": "/assets/img/menu/frozen/camarones-frozen.webp", "category": "frozen", "unit": "docena" }
+  {
+    "id": "carne-suave",
+    "title": "Carne Suave",
+    "description": "Traditional Argentine beef, onion & spices.",
+    "price": 3.5,
+    "photo": "/assets/img/menu/carne-suave.webp",
+    "category": "fresh",
+    "unit": "un"
+  },
+  {
+    "id": "carne-picante",
+    "title": "Carne Picante",
+    "description": "Spicy beef with a kick of chili.",
+    "price": 3.75,
+    "photo": "/assets/img/menu/carne-picante.webp",
+    "category": "fresh",
+    "unit": "un"
+  },
+  {
+    "id": "pollo",
+    "title": "Pollo",
+    "description": "Shredded chicken with bell peppers & mild spices.",
+    "price": 3.5,
+    "photo": "/assets/img/menu/pollo.webp",
+    "category": "fresh",
+    "unit": "un"
+  },
+  {
+    "id": "jamon-queso",
+    "title": "Jamón y Queso",
+    "description": "Ham & melty mozzarella, oven-baked.",
+    "price": 3.25,
+    "photo": "/assets/img/menu/jamon-queso.webp",
+    "category": "fresh",
+    "unit": "un"
+  },
+  {
+    "id": "queso",
+    "title": "Queso",
+    "description": "Melty three-cheese blend (vegetarian).",
+    "price": 3.25,
+    "photo": "/assets/img/menu/queso.webp",
+    "category": "fresh",
+    "unit": "un"
+  },
+  {
+    "id": "cebolla-queso",
+    "title": "Cebolla y Queso",
+    "description": "Caramelized onion & cheese (vegetarian).",
+    "price": 3.25,
+    "photo": "/assets/img/menu/cebolla-queso.webp",
+    "category": "fresh",
+    "unit": "un"
+  },
+  {
+    "id": "camarones",
+    "title": "Camarones",
+    "description": "Shrimp with garlic & fresh herbs.",
+    "price": 4.25,
+    "photo": "/assets/img/menu/camarones.webp",
+    "category": "fresh",
+    "unit": "un"
+  },
+  {
+    "id": "espinaca",
+    "title": "Espinaca",
+    "description": "Spinach & ricotta, a classic vegetarian pick.",
+    "price": 3.25,
+    "photo": "/assets/img/menu/espinaca.webp",
+    "category": "fresh",
+    "unit": "un"
+  },
+  {
+    "id": "carne-suave-frozen",
+    "title": "Carne Suave",
+    "description": "Raw, ready to fry or bake at home. Sold frozen by the dozen.",
+    "price": 21,
+    "photo": "/assets/img/menu/frozen/carne-suave-frozen.webp",
+    "category": "frozen",
+    "unit": "docena"
+  },
+  {
+    "id": "carne-picante-frozen",
+    "title": "Carne Picante",
+    "description": "Raw, ready to fry or bake at home. Sold frozen by the dozen.",
+    "price": 22,
+    "photo": "/assets/img/menu/frozen/carne-picante-frozen.webp",
+    "category": "frozen",
+    "unit": "docena"
+  },
+  {
+    "id": "pollo-frozen",
+    "title": "Pollo",
+    "description": "Raw, ready to fry or bake at home. Sold frozen by the dozen.",
+    "price": 21,
+    "photo": "/assets/img/menu/frozen/pollo-frozen.webp",
+    "category": "frozen",
+    "unit": "docena"
+  },
+  {
+    "id": "jamon-queso-frozen",
+    "title": "Jamón y Queso",
+    "description": "Raw, ready to fry or bake at home. Sold frozen by the dozen.",
+    "price": 20,
+    "photo": "/assets/img/menu/frozen/jamon-queso-frozen.webp",
+    "category": "frozen",
+    "unit": "docena"
+  },
+  {
+    "id": "cerdo-frozen",
+    "title": "Cerdo",
+    "description": "Slow-cooked pork, raw & frozen. Sold by the dozen.",
+    "price": 22,
+    "photo": "/assets/img/menu/frozen/cerdo-frozen.webp",
+    "category": "frozen",
+    "unit": "docena"
+  },
+  {
+    "id": "camarones-frozen",
+    "title": "Camarones",
+    "description": "Raw, ready to fry or bake at home. Sold frozen by the dozen.",
+    "price": 26,
+    "photo": "/assets/img/menu/frozen/camarones-frozen.webp",
+    "category": "frozen",
+    "unit": "docena"
+  }
 ]

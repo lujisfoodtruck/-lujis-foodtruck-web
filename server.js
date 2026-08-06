@@ -4,6 +4,7 @@ const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
 const multer = require('multer');
+const sharp = require('sharp');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -35,18 +36,30 @@ const DEFAULT_SETTINGS = { deliveryDays: [2, 4], deliveryMinimum: 60 };
 const ALLOWED_PHOTO_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 
 const productPhotoUpload = multer({
-  storage: multer.diskStorage({
-    destination: PRODUCTS_UPLOAD_DIR,
-    filename: (req, file, cb) => {
-      const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
-      cb(null, crypto.randomUUID() + ext);
-    }
-  }),
-  limits: { fileSize: 3 * 1024 * 1024 },
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 8 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    cb(null, ALLOWED_PHOTO_TYPES.has(file.mimetype));
+    if (ALLOWED_PHOTO_TYPES.has(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('UNSUPPORTED_PHOTO_TYPE'));
+    }
   }
 });
+
+// Resizes/compresses an uploaded photo (from memory) down to a lightweight
+// webp file on disk, and returns its public URL. Keeps the site's images
+// optimized even when the source photo comes straight off someone's phone.
+async function saveOptimizedPhoto(fileBuffer) {
+  const filename = crypto.randomUUID() + '.webp';
+  const destPath = path.join(PRODUCTS_UPLOAD_DIR, filename);
+  await sharp(fileBuffer)
+    .rotate()
+    .resize({ width: 800, height: 800, fit: 'inside', withoutEnlargement: true })
+    .webp({ quality: 82 })
+    .toFile(destPath);
+  return photoUrl(filename);
+}
 
 // Render (and most hosts) sit behind a proxy; trust it so secure cookies work.
 app.set('trust proxy', 1);
@@ -232,7 +245,7 @@ function photoUrl(filename) {
   return BACKEND_PUBLIC_URL + '/assets/img/products/' + filename;
 }
 
-app.post('/api/admin/products', requireAdmin, productPhotoUpload.single('photo'), (req, res) => {
+app.post('/api/admin/products', requireAdmin, productPhotoUpload.single('photo'), async (req, res) => {
   const title = cleanString(req.body.title, 100);
   const description = cleanString(req.body.description, 300);
   const price = Number(req.body.price);
@@ -243,13 +256,23 @@ app.post('/api/admin/products', requireAdmin, productPhotoUpload.single('photo')
     return res.status(400).json({ error: 'Título y precio válido son obligatorios.' });
   }
 
+  let photo = null;
+  if (req.file) {
+    try {
+      photo = await saveOptimizedPhoto(req.file.buffer);
+    } catch (err) {
+      console.error('Photo processing failed:', err);
+      return res.status(400).json({ error: 'No pudimos procesar esa imagen. Probá con otro archivo JPG, PNG o WEBP.' });
+    }
+  }
+
   const products = readJson(PRODUCTS_FILE, []);
   const newProduct = {
     id: crypto.randomUUID(),
     title,
     description,
     price,
-    photo: req.file ? photoUrl(req.file.filename) : null,
+    photo,
     category,
     unit
   };
@@ -258,7 +281,7 @@ app.post('/api/admin/products', requireAdmin, productPhotoUpload.single('photo')
   res.json(newProduct);
 });
 
-app.put('/api/admin/products/:id', requireAdmin, productPhotoUpload.single('photo'), (req, res) => {
+app.put('/api/admin/products/:id', requireAdmin, productPhotoUpload.single('photo'), async (req, res) => {
   const products = readJson(PRODUCTS_FILE, []);
   const idx = products.findIndex((p) => p.id === req.params.id);
   if (idx === -1) return res.status(404).json({ error: 'Producto no encontrado.' });
@@ -275,8 +298,15 @@ app.put('/api/admin/products/:id', requireAdmin, productPhotoUpload.single('phot
 
   let photo = products[idx].photo;
   if (req.file) {
+    let newPhoto;
+    try {
+      newPhoto = await saveOptimizedPhoto(req.file.buffer);
+    } catch (err) {
+      console.error('Photo processing failed:', err);
+      return res.status(400).json({ error: 'No pudimos procesar esa imagen. Probá con otro archivo JPG, PNG o WEBP.' });
+    }
     removePhotoFile(photo);
-    photo = photoUrl(req.file.filename);
+    photo = newPhoto;
   } else if (req.body.removePhoto === 'true') {
     removePhotoFile(photo);
     photo = null;
@@ -316,6 +346,21 @@ app.put('/api/admin/settings', requireAdmin, (req, res) => {
   const settings = { deliveryDays, deliveryMinimum };
   writeJson(SETTINGS_FILE, settings);
   res.json(settings);
+});
+
+// ---------- Error handler (keeps upload/photo errors as clean JSON) ----------
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ error: 'La imagen es demasiado grande (máx. 8MB).' });
+    }
+    return res.status(400).json({ error: 'No pudimos subir la imagen. Intentá de nuevo.' });
+  }
+  if (err && err.message === 'UNSUPPORTED_PHOTO_TYPE') {
+    return res.status(400).json({ error: 'Formato de imagen no soportado. Usá JPG, PNG o WEBP.' });
+  }
+  console.error(err);
+  res.status(500).json({ error: 'Ocurrió un error inesperado en el servidor.' });
 });
 
 app.listen(PORT, () => {
