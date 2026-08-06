@@ -420,6 +420,8 @@
           cb.checked = settings.deliveryDays.indexOf(Number(cb.value)) !== -1;
         });
         document.getElementById("delivery-minimum").value = settings.deliveryMinimum;
+        document.getElementById("half-dozen-price").value = settings.halfDozenPrice;
+        document.getElementById("dozen-price").value = settings.dozenPrice;
       });
   }
 
@@ -436,7 +438,9 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         deliveryDays: deliveryDays,
-        deliveryMinimum: document.getElementById("delivery-minimum").value
+        deliveryMinimum: document.getElementById("delivery-minimum").value,
+        halfDozenPrice: document.getElementById("half-dozen-price").value,
+        dozenPrice: document.getElementById("dozen-price").value
       })
     })
       .then(function (r) {

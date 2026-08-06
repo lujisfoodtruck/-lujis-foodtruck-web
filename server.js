@@ -31,7 +31,7 @@ const PRODUCTS_FILE = path.join(__dirname, 'data', 'products.json');
 const SETTINGS_FILE = path.join(__dirname, 'data', 'settings.json');
 const PRODUCTS_UPLOAD_DIR = path.join(__dirname, 'public', 'assets', 'img', 'products');
 
-const DEFAULT_SETTINGS = { deliveryDays: [2, 4], deliveryMinimum: 60 };
+const DEFAULT_SETTINGS = { deliveryDays: [2, 4], deliveryMinimum: 60, halfDozenPrice: 32, dozenPrice: 52 };
 
 const ALLOWED_PHOTO_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 
@@ -338,12 +338,22 @@ app.put('/api/admin/settings', requireAdmin, (req, res) => {
     .filter((d) => Number.isInteger(d) && d >= 0 && d <= 6)
     .sort((a, b) => a - b);
   const deliveryMinimum = Number(req.body.deliveryMinimum);
+  const halfDozenPrice = Number(req.body.halfDozenPrice);
+  const dozenPrice = Number(req.body.dozenPrice);
 
-  if (deliveryDays.length === 0 || !Number.isFinite(deliveryMinimum) || deliveryMinimum < 0) {
-    return res.status(400).json({ error: 'Elegí al menos un día de delivery y un mínimo válido.' });
+  if (
+    deliveryDays.length === 0 ||
+    !Number.isFinite(deliveryMinimum) ||
+    deliveryMinimum < 0 ||
+    !Number.isFinite(halfDozenPrice) ||
+    halfDozenPrice < 0 ||
+    !Number.isFinite(dozenPrice) ||
+    dozenPrice < 0
+  ) {
+    return res.status(400).json({ error: 'Revisá los días de delivery y que los precios/mínimo sean válidos.' });
   }
 
-  const settings = { deliveryDays, deliveryMinimum };
+  const settings = { deliveryDays, deliveryMinimum, halfDozenPrice, dozenPrice };
   writeJson(SETTINGS_FILE, settings);
   res.json(settings);
 });

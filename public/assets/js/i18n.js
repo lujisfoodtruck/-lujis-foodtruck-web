@@ -146,6 +146,9 @@
       "menu.waNotes": "Notes:",
       "menu.unitEach": "ea.",
       "menu.unitDozen": "dozen",
+      "menu.dozenGroup": "{n}x Dozen (12 empanadas each, any flavors)",
+      "menu.halfDozenGroup": "Half dozen (6 empanadas, any flavors)",
+      "menu.remainderGroup": "{n} individual empanada(s)",
 
       "days.0": "Sunday",
       "days.1": "Monday",
@@ -298,6 +301,9 @@
       "menu.waNotes": "Notas:",
       "menu.unitEach": "un.",
       "menu.unitDozen": "docena",
+      "menu.dozenGroup": "{n}x Docena (12 empanadas c/u, sabores a elección)",
+      "menu.halfDozenGroup": "Media docena (6 empanadas, sabores a elección)",
+      "menu.remainderGroup": "{n} empanada(s) suelta(s)",
 
       "days.0": "Domingo",
       "days.1": "Lunes",

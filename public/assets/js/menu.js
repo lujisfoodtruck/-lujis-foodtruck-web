@@ -11,12 +11,75 @@
   var WHATSAPP_NUMBER = "17866959263";
 
   var MENU = [];
-  var SETTINGS = { deliveryDays: [2, 4], deliveryMinimum: 60 };
+  var SETTINGS = { deliveryDays: [2, 4], deliveryMinimum: 60, halfDozenPrice: 32, dozenPrice: 52 };
   var cart = {};
   var orderType = "pickup";
 
   function money(n) {
     return "$" + Number(n).toFixed(2);
+  }
+
+  // Fresh (per-unit) empanadas get flat bulk pricing once the combined count
+  // (any mix of flavors) hits 6 or 12 — frozen/by-the-dozen items are untouched.
+  function computePricing() {
+    var entries = Object.keys(cart)
+      .map(function (id) {
+        return { menuItem: findItem(id), qty: cart[id] };
+      })
+      .filter(function (e) {
+        return e.menuItem && e.qty > 0;
+      });
+
+    var freshEntries = entries.filter(function (e) {
+      return e.menuItem.category !== "frozen";
+    });
+    var otherEntries = entries.filter(function (e) {
+      return e.menuItem.category === "frozen";
+    });
+
+    var freshCount = freshEntries.reduce(function (sum, e) {
+      return sum + e.qty;
+    }, 0);
+    var freshRawTotal = freshEntries.reduce(function (sum, e) {
+      return sum + e.menuItem.price * e.qty;
+    }, 0);
+    var otherTotal = otherEntries.reduce(function (sum, e) {
+      return sum + e.menuItem.price * e.qty;
+    }, 0);
+
+    var dozens = 0;
+    var halfDozens = 0;
+    var remainder = freshCount;
+    var freshFinalTotal = freshRawTotal;
+    var bundleApplied = false;
+
+    if (freshCount >= 6) {
+      bundleApplied = true;
+      dozens = Math.floor(freshCount / 12);
+      remainder = freshCount % 12;
+      if (remainder >= 6) {
+        halfDozens = 1;
+        remainder -= 6;
+      }
+      var avgUnitPrice = freshCount > 0 ? freshRawTotal / freshCount : 0;
+      freshFinalTotal = dozens * SETTINGS.dozenPrice + halfDozens * SETTINGS.halfDozenPrice + remainder * avgUnitPrice;
+    }
+
+    return {
+      entries: entries,
+      freshEntries: freshEntries,
+      otherEntries: otherEntries,
+      freshCount: freshCount,
+      freshRawTotal: freshRawTotal,
+      freshFinalTotal: freshFinalTotal,
+      otherTotal: otherTotal,
+      total: freshFinalTotal + otherTotal,
+      bundleApplied: bundleApplied,
+      dozens: dozens,
+      halfDozens: halfDozens,
+      remainder: remainder,
+      remainderPrice: freshCount > 0 ? (freshRawTotal / freshCount) * remainder : 0
+    };
   }
 
   function escapeHtml(str) {
@@ -33,13 +96,6 @@
     return MENU.find(function (m) {
       return m.id === id;
     });
-  }
-
-  function cartTotal() {
-    return Object.keys(cart).reduce(function (sum, id) {
-      var item = findItem(id);
-      return item ? sum + item.price * cart[id] : sum;
-    }, 0);
   }
 
   // ---------- Menu rendering ----------
@@ -127,40 +183,67 @@
   }
 
   // ---------- Cart ----------
+  function cartItemLine(title, right) {
+    return '<div class="cart-item"><span>' + title + "</span><span>" + right + "</span></div>";
+  }
+
   function renderCart() {
     var itemsEl = document.getElementById("cartItems");
     var totalEl = document.getElementById("cartTotal");
+    var pricing = computePricing();
 
-    var entries = Object.keys(cart)
-      .map(function (id) {
-        return { menuItem: findItem(id), qty: cart[id] };
-      })
-      .filter(function (e) {
-        return e.menuItem && e.qty > 0;
-      });
-
-    if (entries.length === 0) {
+    if (pricing.entries.length === 0) {
       itemsEl.innerHTML = '<p class="cart-empty">' + escapeHtml(t("menu.cartEmpty")) + "</p>";
-    } else {
-      itemsEl.innerHTML = entries
+      totalEl.textContent = money(0);
+      updateOrderValidity();
+      return;
+    }
+
+    var html = "";
+
+    if (pricing.bundleApplied) {
+      // Bulk pricing is based on the combined fresh count, not per flavor —
+      // list what was picked without a misleading per-line price.
+      html += pricing.freshEntries
         .map(function (e) {
-          var subtotal = e.menuItem.price * e.qty;
-          return (
-            '<div class="cart-item"><span>' +
-            e.qty +
-            " " +
-            unitLabel(e.menuItem.unit) +
-            " × " +
-            escapeHtml(e.menuItem.title) +
-            "</span><span>" +
-            money(subtotal) +
-            "</span></div>"
+          return cartItemLine(e.qty + " × " + escapeHtml(e.menuItem.title), "");
+        })
+        .join("");
+
+      if (pricing.dozens > 0) {
+        html += cartItemLine(
+          t("menu.dozenGroup", { n: pricing.dozens }),
+          money(pricing.dozens * SETTINGS.dozenPrice)
+        );
+      }
+      if (pricing.halfDozens > 0) {
+        html += cartItemLine(t("menu.halfDozenGroup"), money(SETTINGS.halfDozenPrice));
+      }
+      if (pricing.remainder > 0) {
+        html += cartItemLine(t("menu.remainderGroup", { n: pricing.remainder }), money(pricing.remainderPrice));
+      }
+    } else {
+      html += pricing.freshEntries
+        .map(function (e) {
+          return cartItemLine(
+            e.qty + " " + unitLabel(e.menuItem.unit) + " × " + escapeHtml(e.menuItem.title),
+            money(e.menuItem.price * e.qty)
           );
         })
         .join("");
     }
 
-    totalEl.textContent = money(cartTotal());
+    html += pricing.otherEntries
+      .map(function (e) {
+        return cartItemLine(
+          e.qty + " " + unitLabel(e.menuItem.unit) + " × " + escapeHtml(e.menuItem.title),
+          money(e.menuItem.price * e.qty)
+        );
+      })
+      .join("");
+
+    itemsEl.innerHTML = html;
+    totalEl.textContent = money(pricing.total);
     updateOrderValidity();
   }
 
@@ -251,7 +334,7 @@
   function updateOrderValidity() {
     var sendBtn = document.getElementById("sendOrderBtn");
     var warning = document.getElementById("minimumWarning");
-    var total = cartTotal();
+    var total = computePricing().total;
     var hasItems = total > 0;
 
     if (orderType === "delivery" && total > 0 && total < SETTINGS.deliveryMinimum) {
@@ -271,15 +354,8 @@
 
   // ---------- Send order ----------
   document.getElementById("sendOrderBtn").addEventListener("click", function () {
-    var entries = Object.keys(cart)
-      .map(function (id) {
-        return { menuItem: findItem(id), qty: cart[id] };
-      })
-      .filter(function (e) {
-        return e.menuItem && e.qty > 0;
-      });
-
-    if (entries.length === 0) return;
+    var pricing = computePricing();
+    if (pricing.entries.length === 0) return;
 
     var firstName = document.getElementById("orderFirstName").value.trim();
     var lastName = document.getElementById("orderLastName").value.trim();
@@ -300,8 +376,7 @@
       return;
     }
 
-    var total = cartTotal();
-    if (orderType === "delivery" && total < SETTINGS.deliveryMinimum) {
+    if (orderType === "delivery" && pricing.total < SETTINGS.deliveryMinimum) {
       alert(t("menu.alertMinimum", { minimum: money(SETTINGS.deliveryMinimum) }));
       return;
     }
@@ -315,11 +390,25 @@
       lines.push(t("menu.waDate") + " " + deliveryDateLabel);
     }
     lines.push("");
-    entries.forEach(function (e) {
+
+    if (pricing.bundleApplied) {
+      pricing.freshEntries.forEach(function (e) {
+        lines.push(e.qty + " x " + e.menuItem.title);
+      });
+      if (pricing.dozens > 0) lines.push(t("menu.dozenGroup", { n: pricing.dozens }) + " - " + money(pricing.dozens * SETTINGS.dozenPrice));
+      if (pricing.halfDozens > 0) lines.push(t("menu.halfDozenGroup") + " - " + money(SETTINGS.halfDozenPrice));
+      if (pricing.remainder > 0) lines.push(t("menu.remainderGroup", { n: pricing.remainder }) + " - " + money(pricing.remainderPrice));
+    } else {
+      pricing.freshEntries.forEach(function (e) {
+        lines.push(e.qty + " x " + e.menuItem.title + " - " + money(e.menuItem.price * e.qty));
+      });
+    }
+    pricing.otherEntries.forEach(function (e) {
       lines.push(e.qty + " " + unitLabel(e.menuItem.unit) + " x " + e.menuItem.title + " - " + money(e.menuItem.price * e.qty));
     });
+
     lines.push("");
-    lines.push(t("menu.waTotal") + " " + money(total));
+    lines.push(t("menu.waTotal") + " " + money(pricing.total));
     if (note) {
       lines.push("");
       lines.push(t("menu.waNotes") + " " + note);
