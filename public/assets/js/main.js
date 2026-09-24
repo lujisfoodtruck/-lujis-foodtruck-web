@@ -80,28 +80,26 @@
 
     list.innerHTML = events
       .map(function (evt) {
-        var mediaHtml;
-        if (evt.video) {
-          mediaHtml =
-            '<div class="event-card__map event-card__video">' +
-            '<video controls preload="metadata"' +
-            (evt.videoPoster ? ' poster="' + escapeHtml(evt.videoPoster) + '"' : "") +
-            ">" +
-            '<source src="' +
-            escapeHtml(evt.video) +
-            '" type="video/mp4" />' +
-            "</video></div>";
-        } else {
-          var mapSrc = "https://www.google.com/maps?q=" + encodeURIComponent(evt.address) + "&output=embed";
-          mediaHtml =
-            '<div class="event-card__map"><iframe src="' +
-            mapSrc +
-            '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map of ' +
-            escapeHtml(evt.place) +
-            '"></iframe></div>';
-        }
+        var mapSrc = "https://www.google.com/maps?q=" + encodeURIComponent(evt.address) + "&output=embed";
+        var mediaHtml =
+          '<div class="event-card__map"><iframe src="' +
+          mapSrc +
+          '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map of ' +
+          escapeHtml(evt.place) +
+          '"></iframe></div>';
 
         var extraLinks = "";
+        if (evt.video) {
+          extraLinks +=
+            '<li><a href="#" class="event-card__watch-video" data-video="' +
+            escapeHtml(evt.video) +
+            '" data-poster="' +
+            escapeHtml(evt.videoPoster || "") +
+            '">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5v5l4-2.5-4-2.5Z" fill="currentColor" stroke="none"/></svg>' +
+            escapeHtml(t("s5.watchVideo")) +
+            "</a></li>";
+        }
         if (evt.mapsUrl) {
           extraLinks +=
             '<li><a href="' +
@@ -176,6 +174,49 @@
   }
 
   loadEvents();
+
+  // ---------- Event video lightbox ----------
+  var videoLightbox = document.getElementById("videoLightbox");
+  var videoLightboxVideo = videoLightbox ? videoLightbox.querySelector("video") : null;
+
+  function openVideoLightbox(src, poster) {
+    if (!videoLightbox || !videoLightboxVideo) return;
+    videoLightboxVideo.src = src;
+    if (poster) videoLightboxVideo.setAttribute("poster", poster);
+    videoLightbox.hidden = false;
+    videoLightboxVideo.play().catch(function () {});
+  }
+
+  function closeVideoLightbox() {
+    if (!videoLightbox || !videoLightboxVideo) return;
+    videoLightboxVideo.pause();
+    videoLightboxVideo.removeAttribute("src");
+    videoLightboxVideo.load();
+    videoLightbox.hidden = true;
+  }
+
+  var eventsListEl = document.getElementById("eventsList");
+  if (eventsListEl) {
+    eventsListEl.addEventListener("click", function (e) {
+      var link = e.target.closest(".event-card__watch-video");
+      if (!link) return;
+      e.preventDefault();
+      openVideoLightbox(link.getAttribute("data-video"), link.getAttribute("data-poster"));
+    });
+  }
+
+  if (videoLightbox) {
+    videoLightbox.addEventListener("click", function (e) {
+      if (e.target === videoLightbox || e.target.classList.contains("video-lightbox__backdrop")) {
+        closeVideoLightbox();
+      }
+    });
+    var lightboxCloseBtn = videoLightbox.querySelector(".video-lightbox__close");
+    if (lightboxCloseBtn) lightboxCloseBtn.addEventListener("click", closeVideoLightbox);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !videoLightbox.hidden) closeVideoLightbox();
+    });
+  }
 
   // ---------- Menu teaser ----------
   var lastProducts = null;

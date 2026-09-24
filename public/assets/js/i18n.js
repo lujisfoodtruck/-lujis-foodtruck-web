@@ -78,6 +78,7 @@
       "s5.error": "We couldn't load events right now.",
       "s5.viewMap": "View on Google Maps",
       "s5.viewFlyer": "Event menu (PDF)",
+      "s5.watchVideo": "Watch video",
 
       "s6.eyebrow": "Contact Us",
       "s6.title": "Have any lunch or dinner plan?",
@@ -235,6 +236,7 @@
       "s5.error": "No pudimos cargar los eventos en este momento.",
       "s5.viewMap": "Ver en Google Maps",
       "s5.viewFlyer": "Menú del evento (PDF)",
+      "s5.watchVideo": "Ver video",
 
       "s6.eyebrow": "Contáctanos",
       "s6.title": "¿Tenés planes de almuerzo o cena?",
