@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="../assets/css/style.css?v=3" />
+<link rel="stylesheet" href="../assets/css/style.css?v=4" />
 <style>
   body { background: var(--color-cream); }
   .admin-shell {
@@ -145,12 +145,38 @@
         </div>
         <div class="form-row form-row--2">
           <div class="field">
-            <label for="new-date">Fecha</label>
+            <label for="new-date">Fecha (o inicio, si dura varios días)</label>
             <input type="date" id="new-date" required />
           </div>
           <div class="field">
+            <label for="new-date-end">Fecha de fin (opcional)</label>
+            <input type="date" id="new-date-end" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
             <label for="new-time">Horario</label>
             <input type="text" id="new-time" required maxlength="60" placeholder="Ej: 12:00 PM - 8:00 PM" />
+          </div>
+        </div>
+        <div class="form-row form-row--2">
+          <div class="field">
+            <label for="new-maps-url">Link de Google Maps (opcional)</label>
+            <input type="url" id="new-maps-url" maxlength="300" placeholder="https://maps.app.goo.gl/..." />
+          </div>
+          <div class="field">
+            <label for="new-instagram">Instagram del evento (opcional)</label>
+            <input type="url" id="new-instagram" maxlength="300" placeholder="https://www.instagram.com/..." />
+          </div>
+        </div>
+        <div class="form-row form-row--2">
+          <div class="field">
+            <label for="new-video">Video (opcional, MP4)</label>
+            <input type="file" id="new-video" accept="video/mp4" />
+          </div>
+          <div class="field">
+            <label for="new-flyer">Flyer / menú del evento (opcional, PDF)</label>
+            <input type="file" id="new-flyer" accept="application/pdf" />
           </div>
         </div>
         <button class="btn btn--primary" type="submit">Agregar evento</button>
@@ -250,7 +276,7 @@
   </div>
 </div>
 
-<script src="../assets/js/config.js?v=3"></script>
-<script src="../assets/js/admin.js?v=3"></script>
+<script src="../assets/js/config.js?v=4"></script>
+<script src="../assets/js/admin.js?v=4"></script>
 </body>
 </html>

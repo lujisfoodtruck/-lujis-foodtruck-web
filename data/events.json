@@ -12,5 +12,18 @@
     "address": "1111 Lincoln Rd, Miami Beach, FL 33139",
     "date": "2026-08-16",
     "time": "5:00 PM - 10:00 PM"
+  },
+  {
+    "id": "sounds-of-screams",
+    "place": "Sounds of Screams",
+    "address": "Fair Expo Center, 10901 SW 24th St, Miami, FL 33165",
+    "date": "2026-09-24",
+    "dateEnd": "2026-11-01",
+    "time": "Nightly - check @soundsofscreams for showtimes",
+    "mapsUrl": "https://maps.app.goo.gl/TZCFi5wgKBy27RXA8?g_st=ic",
+    "instagram": "https://www.instagram.com/soundsofscreams",
+    "video": "/assets/video/events/sounds-of-screams.mp4",
+    "videoPoster": "/assets/img/events/sounds-of-screams-poster.webp",
+    "flyer": "/assets/pdf/events/sounds-of-screams-menu.pdf"
   }
 ]

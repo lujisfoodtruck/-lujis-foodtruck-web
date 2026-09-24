@@ -101,6 +101,13 @@
   });
 
   function renderRow(evt) {
+    var extras = "";
+    if (evt.dateEnd) extras += "<span>Hasta: " + escapeHtml(evt.dateEnd) + "</span><br/>";
+    if (evt.mapsUrl) extras += '<span><a href="' + escapeHtml(evt.mapsUrl) + '" target="_blank" rel="noopener">Ver en Maps</a></span><br/>';
+    if (evt.instagram) extras += '<span><a href="' + escapeHtml(evt.instagram) + '" target="_blank" rel="noopener">Instagram</a></span><br/>';
+    if (evt.video) extras += '<span><a href="' + escapeHtml(evt.video) + '" target="_blank" rel="noopener">Video cargado</a></span><br/>';
+    if (evt.flyer) extras += '<span><a href="' + escapeHtml(evt.flyer) + '" target="_blank" rel="noopener">Flyer cargado</a></span><br/>';
+
     return (
       '<div class="admin-event-row" data-id="' +
       evt.id +
@@ -116,7 +123,8 @@
       escapeHtml(evt.date) +
       " · " +
       escapeHtml(evt.time) +
-      "</span>" +
+      "</span><br/>" +
+      extras +
       '<div class="row-actions">' +
       '<button class="btn btn--sm" data-action="edit">Editar</button>' +
       '<button class="btn btn--sm btn--primary" data-action="delete">Eliminar</button>' +
@@ -135,9 +143,30 @@
       '<div class="field"><label>Fecha</label><input type="date" class="edit-date" value="' +
       escapeHtml(evt.date) +
       '" /></div>' +
+      '<div class="field"><label>Fecha de fin (opcional)</label><input type="date" class="edit-date-end" value="' +
+      escapeHtml(evt.dateEnd || "") +
+      '" /></div>' +
+      "</div>" +
+      '<div class="form-row">' +
       '<div class="field"><label>Horario</label><input type="text" class="edit-time" value="' +
       escapeHtml(evt.time) +
       '" maxlength="60" /></div>' +
+      "</div>" +
+      '<div class="form-row form-row--2">' +
+      '<div class="field"><label>Link de Google Maps (opcional)</label><input type="url" class="edit-maps-url" value="' +
+      escapeHtml(evt.mapsUrl || "") +
+      '" maxlength="300" /></div>' +
+      '<div class="field"><label>Instagram del evento (opcional)</label><input type="url" class="edit-instagram" value="' +
+      escapeHtml(evt.instagram || "") +
+      '" maxlength="300" /></div>' +
+      "</div>" +
+      '<div class="form-row form-row--2">' +
+      '<div class="field"><label>Reemplazar video (opcional, MP4)</label><input type="file" class="edit-video" accept="video/mp4" />' +
+      (evt.video ? '<label style="font-weight:400; text-transform:none; display:flex; gap:0.4rem; align-items:center; margin-top:0.3rem;"><input type="checkbox" class="edit-remove-video" /> Quitar video actual</label>' : "") +
+      "</div>" +
+      '<div class="field"><label>Reemplazar flyer (opcional, PDF)</label><input type="file" class="edit-flyer" accept="application/pdf" />' +
+      (evt.flyer ? '<label style="font-weight:400; text-transform:none; display:flex; gap:0.4rem; align-items:center; margin-top:0.3rem;"><input type="checkbox" class="edit-remove-flyer" /> Quitar flyer actual</label>' : "") +
+      "</div>" +
       "</div>" +
       '<div class="row-actions">' +
       '<button class="btn btn--sm btn--primary" data-action="save">Guardar</button>' +
@@ -166,18 +195,20 @@
     e.preventDefault();
     createStatus.className = "form-status";
 
-    var payload = {
-      place: document.getElementById("new-place").value.trim(),
-      address: document.getElementById("new-address").value.trim(),
-      date: document.getElementById("new-date").value,
-      time: document.getElementById("new-time").value.trim()
-    };
+    var formData = new FormData();
+    formData.append("place", document.getElementById("new-place").value.trim());
+    formData.append("address", document.getElementById("new-address").value.trim());
+    formData.append("date", document.getElementById("new-date").value);
+    formData.append("dateEnd", document.getElementById("new-date-end").value);
+    formData.append("time", document.getElementById("new-time").value.trim());
+    formData.append("mapsUrl", document.getElementById("new-maps-url").value.trim());
+    formData.append("instagram", document.getElementById("new-instagram").value.trim());
+    var videoInput = document.getElementById("new-video");
+    if (videoInput.files[0]) formData.append("video", videoInput.files[0]);
+    var flyerInput = document.getElementById("new-flyer");
+    if (flyerInput.files[0]) formData.append("flyer", flyerInput.files[0]);
 
-    apiFetch("/api/admin/events", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
+    apiFetch("/api/admin/events", { method: "POST", body: formData })
       .then(function (r) {
         return r.json().then(function (data) {
           return { ok: r.ok, data: data };
@@ -191,6 +222,10 @@
           createStatus.className = "form-status is-error";
           createStatus.textContent = result.data.error || "No se pudo crear el evento.";
         }
+      })
+      .catch(function () {
+        createStatus.className = "form-status is-error";
+        createStatus.textContent = "No pudimos conectar con el servidor. Intentá de nuevo.";
       });
   });
 
@@ -209,17 +244,39 @@
       if (!confirm("¿Eliminar este evento?")) return;
       apiFetch("/api/admin/events/" + id, { method: "DELETE" }).then(loadEvents);
     } else if (action === "save") {
-      var payload = {
-        place: row.querySelector(".edit-place").value.trim(),
-        address: row.querySelector(".edit-address").value.trim(),
-        date: row.querySelector(".edit-date").value,
-        time: row.querySelector(".edit-time").value.trim()
-      };
-      apiFetch("/api/admin/events/" + id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      }).then(loadEvents);
+      var formData = new FormData();
+      formData.append("place", row.querySelector(".edit-place").value.trim());
+      formData.append("address", row.querySelector(".edit-address").value.trim());
+      formData.append("date", row.querySelector(".edit-date").value);
+      formData.append("dateEnd", row.querySelector(".edit-date-end").value);
+      formData.append("time", row.querySelector(".edit-time").value.trim());
+      formData.append("mapsUrl", row.querySelector(".edit-maps-url").value.trim());
+      formData.append("instagram", row.querySelector(".edit-instagram").value.trim());
+      var videoInput = row.querySelector(".edit-video");
+      if (videoInput.files[0]) formData.append("video", videoInput.files[0]);
+      var removeVideoCb = row.querySelector(".edit-remove-video");
+      if (removeVideoCb && removeVideoCb.checked) formData.append("removeVideo", "true");
+      var flyerInput = row.querySelector(".edit-flyer");
+      if (flyerInput.files[0]) formData.append("flyer", flyerInput.files[0]);
+      var removeFlyerCb = row.querySelector(".edit-remove-flyer");
+      if (removeFlyerCb && removeFlyerCb.checked) formData.append("removeFlyer", "true");
+
+      apiFetch("/api/admin/events/" + id, { method: "PUT", body: formData })
+        .then(function (r) {
+          return r.json().then(function (data) {
+            return { ok: r.ok, data: data };
+          });
+        })
+        .then(function (result) {
+          if (result.ok) {
+            loadEvents();
+          } else {
+            alert(result.data.error || "No se pudo guardar el evento.");
+          }
+        })
+        .catch(function () {
+          alert("No pudimos conectar con el servidor. Intentá de nuevo.");
+        });
     }
   });
 

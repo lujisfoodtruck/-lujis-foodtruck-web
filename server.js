@@ -31,6 +31,10 @@ const PRODUCTS_FILE = path.join(__dirname, 'data', 'products.json');
 const SETTINGS_FILE = path.join(__dirname, 'data', 'settings.json');
 const PRODUCTS_UPLOAD_DIR = path.join(__dirname, 'public', 'assets', 'img', 'products');
 fs.mkdirSync(PRODUCTS_UPLOAD_DIR, { recursive: true });
+const EVENTS_VIDEO_DIR = path.join(__dirname, 'public', 'assets', 'video', 'events');
+const EVENTS_FLYER_DIR = path.join(__dirname, 'public', 'assets', 'pdf', 'events');
+fs.mkdirSync(EVENTS_VIDEO_DIR, { recursive: true });
+fs.mkdirSync(EVENTS_FLYER_DIR, { recursive: true });
 
 const DEFAULT_SETTINGS = { deliveryDays: [2, 4], deliveryMinimum: 60, halfDozenPrice: 32, dozenPrice: 52 };
 
@@ -115,6 +119,51 @@ function cleanString(value, maxLen) {
   return typeof value === 'string' ? value.trim().slice(0, maxLen) : '';
 }
 
+// ---------- Event media (video/flyer) uploads ----------
+const eventMediaUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 25 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (file.fieldname === 'video') {
+      return file.mimetype === 'video/mp4' ? cb(null, true) : cb(new Error('UNSUPPORTED_VIDEO_TYPE'));
+    }
+    if (file.fieldname === 'flyer') {
+      return file.mimetype === 'application/pdf' ? cb(null, true) : cb(new Error('UNSUPPORTED_FLYER_TYPE'));
+    }
+    cb(new Error('UNSUPPORTED_FIELD'));
+  }
+}).fields([
+  { name: 'video', maxCount: 1 },
+  { name: 'flyer', maxCount: 1 }
+]);
+
+function saveEventFile(buffer, dir, publicDir, ext) {
+  const filename = crypto.randomUUID() + ext;
+  fs.writeFileSync(path.join(dir, filename), buffer);
+  return BACKEND_PUBLIC_URL + '/assets/' + publicDir + '/events/' + filename;
+}
+
+function removeEventFile(fileUrl, publicDir, dir) {
+  if (!fileUrl) return;
+  const match = fileUrl.match(new RegExp('/assets/' + publicDir + '/events/[^/?#]+$'));
+  if (!match) return;
+  const abs = path.join(__dirname, 'public', match[0]);
+  if (abs.startsWith(dir)) fs.unlink(abs, () => {});
+}
+
+function saveEventVideo(buffer) {
+  return saveEventFile(buffer, EVENTS_VIDEO_DIR, 'video', '.mp4');
+}
+function saveEventFlyer(buffer) {
+  return saveEventFile(buffer, EVENTS_FLYER_DIR, 'pdf', '.pdf');
+}
+function removeEventVideo(url) {
+  removeEventFile(url, 'video', EVENTS_VIDEO_DIR);
+}
+function removeEventFlyer(url) {
+  removeEventFile(url, 'pdf', EVENTS_FLYER_DIR);
+}
+
 // ---------- Health check (for uptime pingers, keeps Render's free tier awake) ----------
 app.get('/health', (req, res) => {
   res.status(200).send('ok');
@@ -172,24 +221,52 @@ app.get('/api/admin/session', (req, res) => {
 });
 
 // ---------- Admin: events CRUD ----------
-app.post('/api/admin/events', requireAdmin, (req, res) => {
+app.post('/api/admin/events', requireAdmin, eventMediaUpload, (req, res) => {
   const place = cleanString(req.body.place, 150);
   const address = cleanString(req.body.address, 200);
   const date = cleanString(req.body.date, 20);
+  const dateEnd = cleanString(req.body.dateEnd, 20);
   const time = cleanString(req.body.time, 60);
+  const mapsUrl = cleanString(req.body.mapsUrl, 300);
+  const instagram = cleanString(req.body.instagram, 300);
 
   if (!place || !address || !date || !time) {
     return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
   }
 
+  let video = null;
+  let flyer = null;
+  try {
+    if (req.files && req.files.video && req.files.video[0]) {
+      video = saveEventVideo(req.files.video[0].buffer);
+    }
+    if (req.files && req.files.flyer && req.files.flyer[0]) {
+      flyer = saveEventFlyer(req.files.flyer[0].buffer);
+    }
+  } catch (err) {
+    console.error('Event media processing failed:', err);
+    return res.status(400).json({ error: 'No pudimos procesar el video o PDF adjunto.' });
+  }
+
   const events = readJson(EVENTS_FILE, []);
-  const newEvent = { id: crypto.randomUUID(), place, address, date, time };
+  const newEvent = {
+    id: crypto.randomUUID(),
+    place,
+    address,
+    date,
+    dateEnd: dateEnd || null,
+    time,
+    mapsUrl: mapsUrl || null,
+    instagram: instagram || null,
+    video,
+    flyer
+  };
   events.push(newEvent);
   writeJson(EVENTS_FILE, events);
   res.json(newEvent);
 });
 
-app.put('/api/admin/events/:id', requireAdmin, (req, res) => {
+app.put('/api/admin/events/:id', requireAdmin, eventMediaUpload, (req, res) => {
   const events = readJson(EVENTS_FILE, []);
   const idx = events.findIndex((e) => e.id === req.params.id);
   if (idx === -1) return res.status(404).json({ error: 'Evento no encontrado.' });
@@ -197,19 +274,61 @@ app.put('/api/admin/events/:id', requireAdmin, (req, res) => {
   const place = cleanString(req.body.place, 150);
   const address = cleanString(req.body.address, 200);
   const date = cleanString(req.body.date, 20);
+  const dateEnd = cleanString(req.body.dateEnd, 20);
   const time = cleanString(req.body.time, 60);
+  const mapsUrl = cleanString(req.body.mapsUrl, 300);
+  const instagram = cleanString(req.body.instagram, 300);
 
   if (!place || !address || !date || !time) {
     return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
   }
 
-  events[idx] = { id: req.params.id, place, address, date, time };
+  let video = events[idx].video || null;
+  let flyer = events[idx].flyer || null;
+
+  try {
+    if (req.files && req.files.video && req.files.video[0]) {
+      removeEventVideo(video);
+      video = saveEventVideo(req.files.video[0].buffer);
+    } else if (req.body.removeVideo === 'true') {
+      removeEventVideo(video);
+      video = null;
+    }
+    if (req.files && req.files.flyer && req.files.flyer[0]) {
+      removeEventFlyer(flyer);
+      flyer = saveEventFlyer(req.files.flyer[0].buffer);
+    } else if (req.body.removeFlyer === 'true') {
+      removeEventFlyer(flyer);
+      flyer = null;
+    }
+  } catch (err) {
+    console.error('Event media processing failed:', err);
+    return res.status(400).json({ error: 'No pudimos procesar el video o PDF adjunto.' });
+  }
+
+  events[idx] = {
+    id: req.params.id,
+    place,
+    address,
+    date,
+    dateEnd: dateEnd || null,
+    time,
+    mapsUrl: mapsUrl || null,
+    instagram: instagram || null,
+    video,
+    flyer
+  };
   writeJson(EVENTS_FILE, events);
   res.json(events[idx]);
 });
 
 app.delete('/api/admin/events/:id', requireAdmin, (req, res) => {
   const events = readJson(EVENTS_FILE, []);
+  const target = events.find((e) => e.id === req.params.id);
+  if (target) {
+    removeEventVideo(target.video);
+    removeEventFlyer(target.flyer);
+  }
   const next = events.filter((e) => e.id !== req.params.id);
   writeJson(EVENTS_FILE, next);
   res.json({ ok: true });
@@ -363,12 +482,21 @@ app.put('/api/admin/settings', requireAdmin, (req, res) => {
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({ error: 'La imagen es demasiado grande (máx. 8MB).' });
+      if (err.field === 'photo') {
+        return res.status(400).json({ error: 'La imagen es demasiado grande (máx. 8MB).' });
+      }
+      return res.status(400).json({ error: 'El archivo es demasiado grande (máx. 25MB).' });
     }
-    return res.status(400).json({ error: 'No pudimos subir la imagen. Intentá de nuevo.' });
+    return res.status(400).json({ error: 'No pudimos subir el archivo. Intentá de nuevo.' });
   }
   if (err && err.message === 'UNSUPPORTED_PHOTO_TYPE') {
     return res.status(400).json({ error: 'Formato de imagen no soportado. Usá JPG, PNG o WEBP.' });
+  }
+  if (err && err.message === 'UNSUPPORTED_VIDEO_TYPE') {
+    return res.status(400).json({ error: 'Formato de video no soportado. Usá MP4.' });
+  }
+  if (err && err.message === 'UNSUPPORTED_FLYER_TYPE') {
+    return res.status(400).json({ error: 'Formato de archivo no soportado. Usá PDF.' });
   }
   console.error(err);
   res.status(500).json({ error: 'Ocurrió un error inesperado en el servidor.' });

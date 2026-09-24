@@ -46,6 +46,27 @@
     }
   }
 
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  function formatDateRange(dateStr, dateEndStr) {
+    if (!dateEndStr || dateEndStr === dateStr) return formatDate(dateStr);
+    try {
+      var start = new Date(dateStr + "T00:00:00");
+      var end = new Date(dateEndStr + "T00:00:00");
+      var fmt = new Intl.DateTimeFormat(i18n ? i18n.dateLocale() : "en-US", { day: "numeric", month: "long" });
+      return capitalize(fmt.format(start)) + " – " + capitalize(fmt.format(end));
+    } catch (e) {
+      return dateStr;
+    }
+  }
+
+  function instagramHandle(url) {
+    var match = String(url).match(/instagram\.com\/([^/?#]+)/i);
+    return match ? "@" + match[1] : url;
+  }
+
   var lastEvents = null;
 
   function renderEvents(events) {
@@ -59,17 +80,62 @@
 
     list.innerHTML = events
       .map(function (evt) {
-        var mapSrc = "https://www.google.com/maps?q=" + encodeURIComponent(evt.address) + "&output=embed";
+        var mediaHtml;
+        if (evt.video) {
+          mediaHtml =
+            '<div class="event-card__map event-card__video">' +
+            '<video controls preload="metadata"' +
+            (evt.videoPoster ? ' poster="' + escapeHtml(evt.videoPoster) + '"' : "") +
+            ">" +
+            '<source src="' +
+            escapeHtml(evt.video) +
+            '" type="video/mp4" />' +
+            "</video></div>";
+        } else {
+          var mapSrc = "https://www.google.com/maps?q=" + encodeURIComponent(evt.address) + "&output=embed";
+          mediaHtml =
+            '<div class="event-card__map"><iframe src="' +
+            mapSrc +
+            '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map of ' +
+            escapeHtml(evt.place) +
+            '"></iframe></div>';
+        }
+
+        var extraLinks = "";
+        if (evt.mapsUrl) {
+          extraLinks +=
+            '<li><a href="' +
+            escapeHtml(evt.mapsUrl) +
+            '" target="_blank" rel="noopener">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>' +
+            escapeHtml(t("s5.viewMap")) +
+            "</a></li>";
+        }
+        if (evt.instagram) {
+          extraLinks +=
+            '<li><a href="' +
+            escapeHtml(evt.instagram) +
+            '" target="_blank" rel="noopener">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>' +
+            escapeHtml(instagramHandle(evt.instagram)) +
+            "</a></li>";
+        }
+        if (evt.flyer) {
+          extraLinks +=
+            '<li><a href="' +
+            escapeHtml(evt.flyer) +
+            '" target="_blank" rel="noopener">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h9l5 5v15H6z"/><path d="M15 2v5h5"/></svg>' +
+            escapeHtml(t("s5.viewFlyer")) +
+            "</a></li>";
+        }
+
         return (
           '<article class="event-card">' +
-          '<div class="event-card__map"><iframe src="' +
-          mapSrc +
-          '" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map of ' +
-          escapeHtml(evt.place) +
-          '"></iframe></div>' +
+          mediaHtml +
           '<div class="event-card__info">' +
           '<span class="event-card__date">' +
-          escapeHtml(formatDate(evt.date)) +
+          escapeHtml(formatDateRange(evt.date, evt.dateEnd)) +
           "</span>" +
           '<h3 class="event-card__place">' +
           escapeHtml(evt.place) +
@@ -83,6 +149,7 @@
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>' +
           escapeHtml(evt.time) +
           "</li>" +
+          extraLinks +
           "</ul>" +
           "</div>" +
           "</article>"

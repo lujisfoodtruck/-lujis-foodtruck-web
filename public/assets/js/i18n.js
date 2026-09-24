@@ -76,6 +76,8 @@
       "s5.loading": "Loading upcoming events…",
       "s5.empty": "No events scheduled yet. Check back soon!",
       "s5.error": "We couldn't load events right now.",
+      "s5.viewMap": "View on Google Maps",
+      "s5.viewFlyer": "Event menu (PDF)",
 
       "s6.eyebrow": "Contact Us",
       "s6.title": "Have any lunch or dinner plan?",
@@ -231,6 +233,8 @@
       "s5.loading": "Cargando próximos eventos…",
       "s5.empty": "Todavía no hay eventos programados. ¡Volvé pronto!",
       "s5.error": "No pudimos cargar los eventos en este momento.",
+      "s5.viewMap": "Ver en Google Maps",
+      "s5.viewFlyer": "Menú del evento (PDF)",
 
       "s6.eyebrow": "Contáctanos",
       "s6.title": "¿Tenés planes de almuerzo o cena?",
